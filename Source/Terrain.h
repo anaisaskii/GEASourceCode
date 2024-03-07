@@ -8,7 +8,7 @@ namespace GE {
 	{
 	public:
 		Terrain();
-
+		//self explanatory :)
 		GLuint getVertices() { return vbo; }
 		GLuint getIndices() { return ibo; }
 

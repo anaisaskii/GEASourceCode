@@ -12,26 +12,22 @@ namespace GE {
 		int height = heightMap->h;
 		int width = heightMap->w;
 
-		// 3. Create a pointer variable as a means of accessing the pixels
-		// in the image.  Pixel colour defines the Y of a vertex
+		//Create a pointer variableto get pixels in image.  
+		// Pixel colour defines Y of a vertex
 		unsigned char* imageData = (unsigned char*)heightMap->pixels;
 
-		// 4. Get the number of channels as need this to work out
-		// where red colour is in a specific pixel.
+		//Get the number of channels to work out where red colour is in a specific pixel
 		int channels = heightMap->format->BytesPerPixel;
 
-		// 5. Define height and size scales of the terrain.  Again, it would
-		// be better to pass these values as parameters to constructor instead
-		// of hard code them in the constructor
+		//Define height and size scales of the terrain - pass in?
 		float heightScaling = 0.5f;
 		float scaling = 50.0f;
 
-		// 6. Vectors for storing the vertices and indices (of vertices)
+		//Vectors for storing the vertices and indices (of vertices)
 		std::vector<Vertex> vertices;
 		std::vector<GLuint> indices;
 
-		// 7. These loops create the vertices for the terrain
-		// Size of terrain is based on heightmap resolution width and height
+		//create the vertices for the terrain - based on heightmap resolution width and height
 		float x, y, z, u, v;
 		for (int row = 0; row < height; row++) {
 			for (int column = 0; column < width; column++) {

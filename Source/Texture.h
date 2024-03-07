@@ -21,7 +21,7 @@ namespace GE {
 
 		}
 
-		//returns values
+		//returns texture values
 		int getWidth() {
 			return width;
 		}

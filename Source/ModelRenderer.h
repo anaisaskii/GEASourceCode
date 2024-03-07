@@ -22,7 +22,7 @@ namespace GE {
 		void draw(Camera* cam, Terrain* terrain);
 		void destroy();
 
-		//Change Pos/Rot/Scale of models
+		//accessors
 		float getPosX() {
 			return pos_x;
 		}
@@ -55,6 +55,7 @@ namespace GE {
 			return scale_y;
 		}
 
+		//mutators
 		float getScaleZ() {
 			return scale_z;
 		}

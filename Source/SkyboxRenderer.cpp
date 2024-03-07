@@ -79,6 +79,7 @@ namespace GE {
 		CubeVertex(-SIDE, -SIDE,  SIDE)
 	};
 
+	//create sky cube and apply texture
 	void SkyboxRenderer::createCubemap(std::vector<std::string> filenames) {
 		glGenTextures(1, &skyboxCubeMapName);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxCubeMapName);
@@ -155,7 +156,7 @@ namespace GE {
 		bool result = compileProgram(V_ShaderCode, F_ShaderCode, &skyboxProgramId);
 
 		if (!result) {
-			std::cerr << "Failed to create SKyboxRenderer program. Check console for errors" << std::endl;
+			std::cerr << "Failed to create SKyboxRenderer program" << std::endl;
 			return;
 		}
 

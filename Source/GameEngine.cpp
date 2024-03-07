@@ -197,6 +197,7 @@ namespace GE
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Basic Game Engine", msg, nullptr);
 	}
 
+	//processes user input (so user can move)
 	void GameEngine::processInput() {
 	
 
@@ -218,6 +219,7 @@ namespace GE
 
 		cam->setTarget(glm::normalize(direction));
 
+		//check pressed keys
 		SDL_Event e;
 		while (SDL_PollEvent(&e)) {
 			if (e.type == SDL_KEYDOWN) {

@@ -33,7 +33,7 @@ namespace GE {
 		}
 
 		// Accessor methods
-		// Return the position of the camera in terms of x, y, z
+		// Return the position of the camera
 		float getPosX() {
 			return pos.x;
 		}
@@ -51,19 +51,16 @@ namespace GE {
 			return target;
 		}
 
-		// Up direction
 		glm::vec3 getUpDir() const {
 			return up;
 		}
 
-		// Return the camera's view matrix.  Used by draw
-		// method to send view matrix to vertex shader
+		// Return the camera's view matrix.  Used by draw method to send view matrix to vertex shader
 		glm::mat4 getViewMatrix() const {
 			return viewMat;
 		}
 
-		// Return camera's projection matrix.  Same reason
-		// as above
+		// Return camera's projection matrix
 		glm::mat4 getProjectionMatrix() const {
 			return projectionMat;
 		}
@@ -89,7 +86,7 @@ namespace GE {
 			updateCamMatrices();
 		}
 
-		// Set position for all axes in one method
+		// Set position as whole
 		void setPos(glm::vec3 newPos) {
 			pos = newPos;
 
@@ -126,9 +123,7 @@ namespace GE {
 			updateCamMatrices();
 		}
 
-		// Set the aspect ratio.
-		// You might use this method if the program's window
-		// can be resized meaning the width and height change
+		// Set the aspect ratio (window resize stuff)
 		void setAspectRatio(float newAR) {
 			aspectR = newAR;
 
@@ -171,8 +166,7 @@ namespace GE {
 			return viewMat;
 		}
 
-		// Update the camera matrices done in response to
-		// a member variable variable being updated
+		// Update the camera matrices done in response to a member variable variable being updated
 		void updateCamMatrices() {
 			viewMat = glm::lookAt(pos, pos + target, up);
 			projectionMat = glm::perspective(glm::radians(fovy), aspectR, nearClip, farClip);

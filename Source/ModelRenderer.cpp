@@ -11,6 +11,7 @@ namespace GE {
 
 	ModelRenderer::ModelRenderer() //Could take in pos/rot/scale as parameter?
 	{
+		//set pos/rot/scale to default
 		pos_x = pos_y = pos_z = 0.0f;
 		rot_x = rot_y = rot_z = 0.0f;
 		scale_x = scale_y = scale_z = 0.0f;
