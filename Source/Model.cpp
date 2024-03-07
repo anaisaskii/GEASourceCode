@@ -15,7 +15,8 @@ namespace GE {
 		if (!pScene) {
 			return false;
 		}
-
+		
+		//checks through meshes, faces, vertex
 		for (int MeshIdx = 0; MeshIdx < pScene->mNumMeshes; MeshIdx++) {
 			const aiMesh* mesh = pScene->mMeshes[MeshIdx];
 
@@ -31,15 +32,17 @@ namespace GE {
 			}
 		}
 
-		numVertices = loadedVertices.size();
 
-		glGenBuffers(1, &vbo);
+		//accessing/storing vertex data for rendering
+		numVertices = loadedVertices.size(); //number of vertices loaded
 
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glGenBuffers(1, &vbo); //create vbo buffer
 
-		glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(Vertex), loadedVertices.data(), GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo); //set as array buffer
 
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(Vertex), loadedVertices.data(), GL_STATIC_DRAW); //copy vertex data from loaded vertices to array buffer 
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0); //unbind buffer
 
 		return true;
 	}

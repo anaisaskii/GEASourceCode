@@ -2,7 +2,7 @@
 #include <sstream>
 
 using namespace GE;
-
+//keeps program running :)
 int main(int argc, char* argv[])
 {
 	GameEngine ge;

@@ -59,7 +59,7 @@ namespace GE {
 				indices.push_back(n + 1);
 			}
 		}
-		//Creates vertex buffer
+		//Creates vertex buffer/bind to array buffer/move array data to array buffer/unbind
 		glGenBuffers(1, &vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);

@@ -42,7 +42,7 @@ namespace GE {
 		}
 
 	private: 
-		GLuint vbo;
-		int numVertices;
+		GLuint vbo; //vertex buffer object
+		int numVertices; //that models have
 	};
 }

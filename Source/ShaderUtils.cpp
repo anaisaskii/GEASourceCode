@@ -2,25 +2,20 @@
 #include <iostream>
 
 namespace GE {
-	// This is a helper function that allows us to see
-	// shader compiler error messages should our shaders not compile okay
 	void _displayShaderCompilerError(GLuint shaderId) {
-		// First, get the length of the error message string
 		GLint MsgLen = 0;
 
 		glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &MsgLen);
 
-		// Only display the message is more than 1 character was returned
+		// only display if the error message isn't empty
 		if (MsgLen > 1) {
-			// Create a character buffer to store the error message characters
+			// create a character buffer to store the error message characters
 			GLchar* Msg = new GLchar[MsgLen + 1];
 
-			// Get the error message characters from the OpenGL internal log
-			// into the Msg buffer
+			// Get the error message characters from opengl
 			glGetShaderInfoLog(shaderId, MsgLen, nullptr, Msg);
 
-			// Display the error message so we can see what the problem
-			// was with the shader
+			// Display the error message
 			std::cerr << "Error compiling shader" << Msg << std::endl;
 
 			// Release the memory allocated to the string
@@ -29,27 +24,23 @@ namespace GE {
 	}
 
 	bool compileProgram(const GLchar* v_shader_sourcecode[], const GLchar* f_shader_sourcecode[], GLuint* programId) {
-		// Create the vertex shader first.
-		// Order doesn't matter but shaders must be created and compiled before
-		// attaching to program
+		// Create the vertex shader
 		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
 		// Copy the source to OpenGL ready for compilation
 		glShaderSource(vertexShader, 1, v_shader_sourcecode, nullptr);
 
-		// Compile the code
+		// Compile code
 		glCompileShader(vertexShader);
 
 		// Check for compiler errors
-		// Presume shader didn't compile
+		// assume shader didn't compile
 		GLint isShaderCompiledOK = GL_FALSE;
 
 		// Get the compile status from OpenGL
 		glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &isShaderCompiledOK);
 
-		// Has the shader failed to compile?
 		if (isShaderCompiledOK != GL_TRUE) {
-			// Yes, so display an error message
 			std::cerr << "Unable to compile vertex shader" << std::endl;
 
 			_displayShaderCompilerError(vertexShader);
@@ -63,11 +54,8 @@ namespace GE {
 		// Transfer the shader code
 		glShaderSource(fragmentShader, 1, f_shader_sourcecode, NULL);
 
-		// Compile it
 		glCompileShader(fragmentShader);
 
-		// Check for errors.  Code is same as above of getting status
-		// and displaying error message, if necessary
 		isShaderCompiledOK = GL_FALSE;
 		glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &isShaderCompiledOK);
 
@@ -86,9 +74,8 @@ namespace GE {
 		glAttachShader(*programId, vertexShader);
 		glAttachShader(*programId, fragmentShader);
 
-		// Now link the program to create an executable program we
-		// and use to render the object
-		// Program executable will exist in graphics memory
+		// link the program to create an executable program
+		// program executable exists in graphics memory
 		glLinkProgram(*programId);
 
 		// Check for linking errors
@@ -100,7 +87,6 @@ namespace GE {
 			return false;
 		}
 
-		// Got this far so must be okay, return true
 		return true;
 	}
 

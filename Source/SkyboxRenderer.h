@@ -8,6 +8,7 @@
 namespace GE {
 	class SkyboxRenderer {
 	public:
+		//takes in images for cube
 		SkyboxRenderer(std::string front_fname, std::string back_fname, std::string left_fname, std::string right_fname, std::string top_fname, std::string bottom_fname)
 		{
 			std::vector<std::string> filenames;

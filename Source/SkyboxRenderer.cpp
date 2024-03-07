@@ -6,7 +6,7 @@
 
 namespace GE {
 	struct CubeVertex {
-		float x, y, z;
+		float x, y, z; //location
 
 		CubeVertex() {
 			x = 0.0f;
@@ -111,21 +111,23 @@ namespace GE {
 
 			SDL_FreeSurface(surfaceImage);
 		}
+
+		//parameters for cube map
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 	}
 
 	void SkyboxRenderer::createCubeVBO() {
-		glGenBuffers(1, &vboSkybox);
+		glGenBuffers(1, &vboSkybox); // 1 because one buffer object stored in vboskybox
 		glBindBuffer(GL_ARRAY_BUFFER, vboSkybox);
-
 		glBufferData(GL_ARRAY_BUFFER, sizeof(cube), cube, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
 	void SkyboxRenderer::createSkyboxProgram() {
 		//prepares vertices for rendering
+		// applys transforms to vertexes
 		//assigns vertex position as texture coordinates to be passed to fragment shader
 		const GLchar* V_ShaderCode[] = {
 			"#version 140\n"
@@ -153,6 +155,7 @@ namespace GE {
 			"}\n"
 		};
 
+		//error checking
 		bool result = compileProgram(V_ShaderCode, F_ShaderCode, &skyboxProgramId);
 
 		if (!result) {
@@ -180,26 +183,35 @@ namespace GE {
 		glm::mat4 camView = cam->getViewMatrix();
 		glm::mat4 projection = cam->getProjectionMatrix();
 
+		//setting camera position to 0,0,0
 		camView[3][0] = 0.0f;
 		camView[3][1] = 0.0f;
 		camView[3][2] = 0.0f;
 
+		//uses compiled skybox shader code
 		glUseProgram(skyboxProgramId);
-
+		//binds skybox data to array buffer
 		glBindBuffer(GL_ARRAY_BUFFER, vboSkybox);
 
+		//to transform vertices from world space to screen space
 		glUniformMatrix4fv(viewUniformId, 1, GL_FALSE, glm::value_ptr(camView));
 		glUniformMatrix4fv(projectionUniformId, 1, GL_FALSE, glm::value_ptr(projection));
-
+		
+		//allows vertex data to be passed to shader
 		glEnableVertexAttribArray(vertexLocation);
 
+		//vertices have xyz
 		glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, sizeof(CubeVertex), (void*)offsetof(CubeVertex, x));
 
+		//texture
 		glActiveTexture(GL_TEXTURE0);
 		glUniform1i(samplerId, 0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxCubeMapName);
 
+		//draw faces 
 		glDrawArrays(GL_TRIANGLES, 0, sizeof(cube) / sizeof(CubeVertex));
+
+		//clean up (unbind)
 		glDisableVertexAttribArray(vertexLocation);
 		glUseProgram(0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
@@ -210,6 +222,7 @@ namespace GE {
 		}
 	}
 
+	//clean up
 	void SkyboxRenderer::destroy() {
 		glDeleteProgram(skyboxProgramId);
 		glDeleteBuffers(1, &vboSkybox);

@@ -30,12 +30,14 @@ namespace GE {
 
 	}
 
+	//for specific error
 	void displayShaderCompilerError(GLuint shaderId)
 	{
 		GLint MsgLen = 0;
 
 		glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &MsgLen);
 
+		//check message not empty before posting
 		if (MsgLen > 1) {
 			GLchar* Msg = new GLchar[MsgLen + 1];
 			glGetShaderInfoLog(shaderId, MsgLen, NULL, Msg);
@@ -48,6 +50,7 @@ namespace GE {
 	{
 		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
+		//prepares vertex for rendering (transforms)
 		const GLchar* V_ShaderCode[] = {
 			"#version 140\n"
 			"in vec3 vertexPos3D;\n"
@@ -63,6 +66,7 @@ namespace GE {
 			"uv = vUV;\n"
 			"}\n" };
 
+		//set source code of vertex shader to above shader code
 		glShaderSource(vertexShader, 1, V_ShaderCode, NULL);
 
 		glCompileShader(vertexShader);
@@ -86,11 +90,11 @@ namespace GE {
 			"out vec4 fragmentColour;\n"
 			"void main()\n"
 			"{\n"
-			"fragmentColour = texture(sampler, uv).rgba;\n" //colour of the triangle
+			"fragmentColour = texture(sampler, uv).rgba;\n" //triangle texture
 			"}\n"
 		};
 
-		glShaderSource(fragmentShader, 1, F_ShaderCode, NULL);
+		glShaderSource(fragmentShader, 1, F_ShaderCode, NULL); //set the shader source to fragment shader code
 
 		glCompileShader(fragmentShader);
 
@@ -105,8 +109,9 @@ namespace GE {
 			return;
 		}
 
-		programId = glCreateProgram();
+		programId = glCreateProgram(); 
 
+		//use shaders
 		glAttachShader(programId, vertexShader);
 		glAttachShader(programId, fragmentShader);
 
@@ -139,10 +144,11 @@ namespace GE {
 
 	void ModelRenderer::draw(Camera* cam, Model *model)
 	{
-		glEnable(GL_CULL_FACE);
+		glEnable(GL_CULL_FACE); //dont render faces that aren't seen
 
 		glm::mat4 transformationMat = glm::mat4(1.0f);
 
+		//transformation matrix
 		transformationMat = glm::translate(transformationMat, glm::vec3(pos_x, pos_y, pos_z));
 		transformationMat = glm::rotate(transformationMat, glm::radians(rot_x), glm::vec3(1.0f, 0.0f, 0.0f));
 		transformationMat = glm::rotate(transformationMat, glm::radians(rot_y), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -160,11 +166,11 @@ namespace GE {
 
 		glBindBuffer(GL_ARRAY_BUFFER, model->getVertices());
 
-		glEnableVertexAttribArray(vertexLocation);
+		glEnableVertexAttribArray(vertexLocation); //use vertex data when rendering
 
 		glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, x));
 
-		glEnableVertexAttribArray(vertexUVLocation);
+		glEnableVertexAttribArray(vertexUVLocation); //use uv co ordinates for rendering
 
 		glVertexAttribPointer(vertexUVLocation, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, u));
 
@@ -185,6 +191,7 @@ namespace GE {
 		glDisable(GL_CULL_FACE);
 	}
 
+	//same as model one but for terrain
 	void ModelRenderer::draw(Camera* cam, Terrain* terrain)
 	{
 		glEnable(GL_CULL_FACE);
